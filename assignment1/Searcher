@@ -1,0 +1,2 @@
+java -jar assignment1-0.1-jar-with-dependencies.jar "$@"
+
