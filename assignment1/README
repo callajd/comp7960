@@ -1,0 +1,13 @@
+To build the package from the command line, run the following command from the assignment1 folder (the folder that contains pom.xml):
+
+mvn clean compile assembly:single
+
+Now from same folder execute this command:
+
+cp -f Searcher target/.
+
+Now to run the program, switch to the target directory first:
+
+cd target
+
+Now run "./Searcher" with your arguments (with no arguments, and you should see usage information describing the command line parameters).
