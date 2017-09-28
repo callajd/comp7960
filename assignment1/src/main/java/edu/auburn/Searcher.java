@@ -1,9 +1,18 @@
 package edu.auburn;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jsoup.nodes.Document;
+
+import edu.auburn.extraction.HtmlExtractionStore;
+import edu.auburn.search.HtmlWebNode;
+import edu.auburn.search.IterativeDeepeningDFS;
+import edu.auburn.search.Node;
+import edu.auburn.search.NodeVisitException;
+import edu.auburn.search.StaticPredicate;
 
 public class Searcher {
 
@@ -16,7 +25,7 @@ public class Searcher {
       + "So \"Searcher sample 5 1\" will return false, while \"Searcher sample 5 2\"\n"
       + "will return true.\n";
 
-  public static void main(String[] args) throws NodeVisitException {
+  public static void main(String[] args) throws IOException, NodeVisitException {
     if (args.length < 2 || args.length > 3) {
       System.out.println(Usage);
       return;
@@ -32,12 +41,17 @@ public class Searcher {
         return;
       }
     }
-
-    Document result = IterativeDeepeningDFS.<Document>search(new HtmlWebNode(args[0]), (x) -> false,
-        Integer.parseInt(args[1]), true);
+    
+    // This will contain all of the extraction data per url.
+    HtmlExtractionStore store = new HtmlExtractionStore();
+    
+    Document result = IterativeDeepeningDFS.<Document>search(new HtmlWebNode(args[0], store),
+        new StaticPredicate<Document>(false), Integer.parseInt(args[1]), true);
 
     System.out.println(String.format("\nSearch result: %s",
         result != null ? result.location() : "no goal found."));
+    
+    store.persist(new FileWriter("htmlExtraction.store"));
   }
 
   public static void runSample(Integer goal, Integer maxDepth) throws NodeVisitException {

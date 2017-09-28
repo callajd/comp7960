@@ -1,4 +1,4 @@
-package edu.auburn;
+package edu.auburn.search;
 
 import java.util.Stack;
 import java.util.function.Predicate;
@@ -42,6 +42,14 @@ public class IterativeDeepeningDFS {
   public static <T> T search(Node<T> root, Predicate<T> isGoal, int maxDepth)
       throws NodeVisitException {
     return search(root, isGoal, maxDepth, false);
+  }
+  
+  public static <T> T search(Node<T> root, int maxDepth, boolean verbose) throws NodeVisitException {
+    return search(root, new StaticPredicate<T>(false), maxDepth, verbose);
+  }
+  
+  public static <T> T search(Node<T> root, int maxDepth) throws NodeVisitException {
+    return search(root, maxDepth, false);
   }
 
   private static class SearchNode<V> {

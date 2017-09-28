@@ -1,4 +1,4 @@
-package edu.auburn;
+package edu.auburn.search;
 
 import java.util.Collection;
 

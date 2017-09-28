@@ -1,6 +1,8 @@
-package edu.auburn;
+package edu.auburn.search;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.util.Collection;
@@ -16,28 +18,31 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import edu.auburn.extraction.HtmlExtractionStore;
+import edu.auburn.extraction.UnigramExtractor;
+
 public class HtmlWebNode implements Node<Document> {
 
   private static final Document DeadDocument = new Document("DeadDocument");
 
   private String url;
   private Document document = null;
+  private HtmlExtractionStore store;
 
-  public HtmlWebNode(String url) {
+  public HtmlWebNode(String url, HtmlExtractionStore store) {
     this.url = url;
+    this.store = store;
   }
 
   public Document getDocument() throws IOException {
     try {
-      if (document == null) {
+      if (document == null && !store.hasExtractionInfo(url)) {
         document = Jsoup.connect(url).get();
-
-        // This is where we should perform the feature extraction,
-        // since it is only executed once for each valid link.
-        // However, we should verify (by checking a URL cache?) that
-        // we haven't already performed the extraction for that URL
-        // so that we don't repeat extractions for same URL multiple
-        // times.
+        
+        // Perform the extraction and store the results since 
+        // we just loaded document for the first time.
+        Reader reader = new StringReader(document.outerHtml());
+        store.addExtractionInfo(url, UnigramExtractor.extractFeatures(reader));
       }
     } catch (UnsupportedMimeTypeException e) {
       document = DeadDocument;
@@ -73,14 +78,14 @@ public class HtmlWebNode implements Node<Document> {
 
       String linkUrl = link.attr("abs:href");
 
-      if (linkUrl != null && linkUrl.length() != 0) {
-        // We are hashing to avoid string comparisons unless there are collisions
-        if (!children.containsKey(linkUrl.hashCode())
-            || linkUrl.compareTo(children.get(linkUrl.hashCode()).getData().location()) != 0) {
-          children.put(linkUrl.hashCode(), new HtmlWebNode(linkUrl));
-        }
+      // If the store already has info for this url, we will "prune" it from this
+      // search tree so that we don't repeat same work.
+      if (linkUrl != null && linkUrl.length() != 0 && 
+          !store.hasExtractionInfo(linkUrl) && !children.containsKey(linkUrl)) {
+        children.put(linkUrl.hashCode(), new HtmlWebNode(linkUrl, store));
       }
     }
+    
     return children.values();
   }
 
