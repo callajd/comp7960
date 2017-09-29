@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 public class IterativeDeepeningDFS {
 
-  public static <T> T search(Node<T> root, Predicate<T> isGoal, int maxDepth, boolean verbose)
+  public static <T> T search(Node<T> root, Visitor<Node<T>> visitor, Predicate<Node<T>> isGoal, int maxDepth)
       throws NodeVisitException {
 
     for (int depth = 0; depth <= maxDepth; depth++) {
@@ -14,12 +14,10 @@ public class IterativeDeepeningDFS {
 
       while (!path.isEmpty()) {
         SearchNode<T> current = path.pop();
+        
+        visitor.visit(current.node);
 
-        if (verbose)
-          System.out.print(
-              String.format("\nEvaluating node '%s' at depth '%s'", current.node, current.depth));
-
-        if (isGoal.test(current.node.getData())) {
+        if (isGoal.test(current.node)) {
           System.out.println("...goal.");
           return current.node.getData();
         }
@@ -33,23 +31,7 @@ public class IterativeDeepeningDFS {
       }
     }
 
-    if (verbose)
-      System.out.println(String.format("\nCouldn't find goal within depth '%s'.", maxDepth));
-
     return null; // couldn't find a match
-  }
-
-  public static <T> T search(Node<T> root, Predicate<T> isGoal, int maxDepth)
-      throws NodeVisitException {
-    return search(root, isGoal, maxDepth, false);
-  }
-  
-  public static <T> T search(Node<T> root, int maxDepth, boolean verbose) throws NodeVisitException {
-    return search(root, new StaticPredicate<T>(false), maxDepth, verbose);
-  }
-  
-  public static <T> T search(Node<T> root, int maxDepth) throws NodeVisitException {
-    return search(root, maxDepth, false);
   }
 
   private static class SearchNode<V> {
