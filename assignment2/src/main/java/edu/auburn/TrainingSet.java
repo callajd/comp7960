@@ -10,23 +10,23 @@ public class TrainingSet {
 
   public static List<MaliciousWebpageIndividual> trainingData;
   public static String filePath;
-  
-  public static List<MaliciousWebpageIndividual> trainingData()  {
-    if(trainingData == null) {
+
+  public static List<MaliciousWebpageIndividual> trainingData() {
+    if (trainingData == null) {
       trainingData = new ArrayList<MaliciousWebpageIndividual>();
       try {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        for(String line = reader.readLine(); line != null; line = reader.readLine()) {
-          String [] split = line.split(" ");
+        for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+          String[] split = line.split(" ");
           double output = Double.parseDouble(split[1]);
           List<Double> vector = new ArrayList<Double>();
-          for(int i = 2; i < split.length; i++) {
+          for (int i = 2; i < split.length; i++) {
             vector.add(Double.parseDouble(split[i]));
           }
           trainingData.add(new MaliciousWebpageIndividual(output, vector));
         }
         reader.close();
-      } catch(IOException e) {
+      } catch (IOException e) {
       }
     }
     return trainingData;

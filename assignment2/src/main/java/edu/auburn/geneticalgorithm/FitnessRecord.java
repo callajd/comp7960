@@ -1,12 +1,12 @@
 package edu.auburn.geneticalgorithm;
 
-public interface FitnessRecord<T, V extends Comparable<V>> extends Comparable<FitnessRecord<T,V>> {
-	
-	public T getInput();
+public interface FitnessRecord<T, V extends Comparable<V>> extends Comparable<FitnessRecord<T, V>> {
 
-	public V getFitness();
+  public T getInput();
 
-	default public int compareTo(FitnessRecord<T, V> other) {
-		return getFitness().compareTo(other.getFitness());
-	}
+  public V getFitness();
+
+  default public int compareTo(FitnessRecord<T, V> other) {
+    return getFitness().compareTo(other.getFitness());
+  }
 }
