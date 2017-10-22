@@ -8,12 +8,12 @@ import java.util.List;
 
 public class TrainingSet {
 
-  public static List<Instance> trainingData;
+  public static List<MaliciousWebpageIndividual> trainingData;
   public static String filePath;
   
-  public static List<Instance> trainingData()  {
+  public static List<MaliciousWebpageIndividual> trainingData()  {
     if(trainingData == null) {
-      trainingData = new ArrayList<Instance>();
+      trainingData = new ArrayList<MaliciousWebpageIndividual>();
       try {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         for(String line = reader.readLine(); line != null; line = reader.readLine()) {
@@ -23,7 +23,7 @@ public class TrainingSet {
           for(int i = 2; i < split.length; i++) {
             vector.add(Double.parseDouble(split[i]));
           }
-          trainingData.add(new Instance(output, vector));
+          trainingData.add(new MaliciousWebpageIndividual(output, vector));
         }
         reader.close();
       } catch(IOException e) {
