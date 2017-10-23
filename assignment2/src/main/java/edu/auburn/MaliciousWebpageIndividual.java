@@ -5,10 +5,17 @@ import edu.auburn.neuralnetwork.Individual;
 
 public class MaliciousWebpageIndividual extends Individual<List<Double>> {
 
-  public MaliciousWebpageIndividual(Double classification, List<Double> data) {
+  private final int index;
+
+  public MaliciousWebpageIndividual(int index, Double classification, List<Double> data) {
     super(classification, data);
+    this.index = index;
   }
 
+  public int getIndex() {
+    return index;
+  }
+  
   @Override
   public double distance(Individual<List<Double>> other) {
 

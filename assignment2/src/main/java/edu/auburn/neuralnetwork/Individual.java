@@ -19,5 +19,7 @@ public abstract class Individual<T> {
   }
 
   public abstract double distance(Individual<T> other);
+  
+  public abstract int getIndex();
 
 }

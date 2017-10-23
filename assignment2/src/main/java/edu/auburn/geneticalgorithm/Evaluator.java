@@ -1,5 +1,5 @@
 package edu.auburn.geneticalgorithm;
 
-public interface FitnessEvaluator<T, V extends Comparable<V>> {
+public interface Evaluator<T, V extends Comparable<V>> {
   FitnessRecord<T, V> evaluateFitness(T individual);
 }

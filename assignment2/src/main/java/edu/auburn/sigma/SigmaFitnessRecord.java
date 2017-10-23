@@ -20,4 +20,7 @@ public class SigmaFitnessRecord implements FitnessRecord<Double, Double> {
     return fitness;
   }
 
+  public String toString() {
+    return String.format("[ sigma : %f, fitness : %f]", sigma, fitness);
+  }
 }

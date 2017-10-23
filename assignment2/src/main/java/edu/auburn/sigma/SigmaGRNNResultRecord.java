@@ -13,16 +13,29 @@ public class SigmaGRNNResultRecord implements GRNNResultRecord<Double> {
   public SigmaGRNNResultRecord(double sigma) {
     this.sigma = sigma;
   }
+  
+  public SigmaGRNNResultRecord combine(SigmaGRNNResultRecord other) {
+    if(other.sigma != sigma) throw new IllegalArgumentException();
+    
+    SigmaGRNNResultRecord combined = new SigmaGRNNResultRecord(sigma);
+    combined.truePositive = truePositive + other.truePositive;
+    combined.trueNegative = trueNegative + other.trueNegative;
+    combined.falsePositive = falsePositive + other.falsePositive;
+    combined.falseNegative = falseNegative + other.falseNegative;
+    
+    return combined;
+  }
 
   // Only method that mutates
   public void accept(double expected, double actual) {
-    if (actual > 0 && actual == expected)
+    double flattenedActual = actual < 0 ? -1 : 1;
+    if (actual > 0 && flattenedActual == expected)
       truePositive++;
-    if (actual < 0 && actual == expected)
+    if (actual < 0 && flattenedActual == expected)
       trueNegative++;
-    if (actual > 0 && actual != expected)
+    if (actual > 0 && flattenedActual != expected)
       falsePositive++;
-    if (actual < 0 && actual != expected)
+    if (actual < 0 && flattenedActual != expected)
       falseNegative++;
   }
 
