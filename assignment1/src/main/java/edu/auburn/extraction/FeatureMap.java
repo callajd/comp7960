@@ -72,7 +72,10 @@ public class FeatureMap<T> {
   +  
 +  public String toStringVector() {
 +	StringBuilder mapStringBuilder = new StringBuilder();
-+    for (T feature : getFeatures()) {
+    int count = 0;
+  mapStringBuilder.append("%d ", count);
+    count ++;
++   for (T feature : getFeatures()) {
 +      Integer featureCount = featureDistribution.get(feature);
 +      double featureFraction = ((double) featureCount) / getTotalFeatureCount();
 +      mapStringBuilder.append(String.format("%f ", featureFraction));
