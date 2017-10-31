@@ -20,6 +20,11 @@ public class FeatureMapFileWriter {
     getFileWriter().write("\n");
   }
   
+  public void writeVectors(String url, FeatureMap<Character> featureMap) throws IOException {
+    getFileWriter().write(featureMap.toString());
+    getFileWriter().write("\n");
+  }
+  
   public void close() throws IOException {
     getFileWriter().flush();
     getFileWriter().close();
