@@ -21,6 +21,7 @@ public class FeatureMapFileWriter {
   }
   
   public void writeVectors(String url, FeatureMap<Character> featureMap) throws IOException {
+    getFileWriter().write("0 "); //Dummy Value for TrainingSet's count
     getFileWriter().write(featureMap.toStringVector());
     getFileWriter().write("\n");
   }
