@@ -21,7 +21,7 @@ public class FeatureMapFileWriter {
   }
   
   public void writeVectors(String url, FeatureMap<Character> featureMap) throws IOException {
-    getFileWriter().write(featureMap.toString());
+    getFileWriter().write(featureMap.toStringVector());
     getFileWriter().write("\n");
   }
   
