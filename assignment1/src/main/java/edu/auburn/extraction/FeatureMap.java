@@ -69,4 +69,14 @@ public class FeatureMap<T> {
     
     return mapStringBuilder.toString();
   }
+   
+  public String toStringVector() {
+	StringBuilder mapStringBuilder = new StringBuilder();
+   for (T feature : getFeatures()) {
+      Integer featureCount = featureDistribution.get(feature);
+      double featureFraction = ((double) featureCount) / getTotalFeatureCount();
+      mapStringBuilder.append(String.format("%f ", featureFraction));
+    }    
+    return mapStringBuilder.toString();
+}
 }
